@@ -45,7 +45,8 @@ const Features = () => {
     <section className="w-full bg-rice-husk-beige py-16 px-6">
       <div className="max-w-6xl mx-auto">
         <h2 className="text-3xl font-semibold text-center mb-6">
-          Core <span className="text-malunggay-green">Features</span>
+          Core Features{" "}
+          <span className="text-malunggay-green">/ Mga Tampok</span>
         </h2>
         <p className="text-center text-dark-soil-brown mb-12 max-w-2xl mx-auto">
           Gisagol ang teknolohiya ug lokal nga kasayuran aron mas mapadali ang
