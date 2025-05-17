@@ -1,0 +1,58 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Nunito+Sans:wght@400;500;600&display=swap");
+
+@import "tailwindcss";
+
+@theme {
+  /* Color Palette */
+  --color-rice-husk-beige: #faf3e0;
+  --color-dark-soil-brown: #5c4033;
+  --color-malunggay-green: #3e8e41;
+  --color-malunggay-green-darker: #55723a;
+
+  /* Font Families */
+  --font-headline: "Poppins", sans-serif;
+  --font-body: "Nunito Sans", sans-serif;
+
+  /* Text Colors */
+  --color-headline: var(--color-dark-soil-brown);
+  --color-body: var(--color-dark-soil-brown);
+  --color-button-text: var(--color-rice-husk-beige);
+  --color-icons: var(--color-malunggay-green);
+}
+
+/* Base Styles */
+@layer base {
+  html {
+    @apply bg-[#FDEBC1];
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-headline text-headline;
+  }
+
+  body {
+    @apply font-body text-body;
+  }
+}
+
+/* Component Styles */
+@layer components {
+  .btn {
+    @apply bg-malunggay-green text-button-text font-headline px-6 py-3 rounded-lg;
+    @apply hover:brightness-110 transition-all duration-200;
+  }
+
+  .btn-neutral {
+    @apply bg-transparent border border-dark-soil-brown text-dark-soil-brown font-headline px-4 py-2 rounded-lg;
+    @apply hover:bg-malunggay-green hover:text-button-text transition duration-200 hover:border-transparent;
+  }
+
+  .icon {
+    @apply text-icons;
+  }
+}
