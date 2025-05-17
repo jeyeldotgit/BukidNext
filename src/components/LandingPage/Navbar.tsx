@@ -6,7 +6,7 @@ import appLogo from "../../../images/appLogo.png";
 
 const navlinks = [
   { name: "Tungkol", path: "/about" },
-  { name: "Mga Serbisyo", path: "/services" },
+  { name: "Tampok", path: "/features" },
   { name: "Blogs", path: "/blog" },
   { name: "Contact", path: "/contact" },
 ];
