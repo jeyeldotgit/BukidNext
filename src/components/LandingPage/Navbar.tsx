@@ -1,91 +1,101 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { HiOutlineMenu, HiOutlineX } from "react-icons/hi";
+import {
+  FaTimes,
+  FaBars,
+  FaInfoCircle,
+  FaStar,
+  FaBlog,
+  FaEnvelope,
+} from "react-icons/fa";
 
 import appLogo from "../../../images/appLogo.png";
 
 const navlinks = [
-  { name: "Tungkol", path: "/about" },
-  { name: "Tampok", path: "/features" },
-  { name: "Blogs", path: "/blog" },
-  { name: "Contact", path: "/contact" },
+  { name: "Tungkol", path: "/about", icon: <FaInfoCircle /> },
+  { name: "Tampok", path: "/features", icon: <FaStar /> },
+  { name: "Blogs", path: "/blog", icon: <FaBlog /> },
+  { name: "Contact", path: "/contact", icon: <FaEnvelope /> },
 ];
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const [menuOpen, setMenuOpen] = useState(false);
 
-  const [isOpen, setIsOpen] = useState<boolean>(false);
-
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
+  const handleNavigate = (path: string) => {
+    navigate(path);
+    setMenuOpen(false); // Close menu after navigation (for mobile)
   };
 
   return (
-    <div className="pt-8 px-4 top-0 flex w-full justify-between items-center font-headline font-normal md:p-8 md:justify-around md:px-10">
-      <div className="flex justify-center items-center">
-        <img src={appLogo} alt="logo" className="h-auto w-14" />
-        <h1 className="text-2xl font-headline">
-          Bukid<span className="text-malunggay-green font-semibold">Next</span>
-        </h1>
-      </div>
+    <nav className="w-full px-4 top-0 font-headline font-normal relative z-50">
+      <div className="flex justify-between items-center md:px-32 md:py-6 md:justify-between">
+        {/* Logo */}
+        <div className="flex items-center gap-3">
+          <img src={appLogo} alt="logo" className="h-auto w-14" />
+          <h1 className="text-2xl">
+            Bukid
+            <span className="text-malunggay-green font-semibold">Next</span>
+          </h1>
+        </div>
 
-      {/* Desktop Menu */}
-      <ul className="hidden md:flex md:justify-between md:items-center md:w-6/10 md:cursor-pointer md:text-lg ">
-        {navlinks.map((item) => (
-          <li key={item.name}>
-            <p
-              onClick={() => navigate(item.path)}
-              className="cursor-pointer hover:text-malunggay-green"
-            >
-              {item.name}
-            </p>
-          </li>
-        ))}
-
-        <button
-          className="btn-neutral font-medium"
-          onClick={() => navigate("/signup")}
-        >
-          Mag Sign-up
-        </button>
-      </ul>
-
-      {/* Hamburger Icon (Mobile) */}
-      <div className="md:hidden z-51" onClick={toggleMenu}>
-        {isOpen ? (
-          <HiOutlineX className="text-3xl text-dark-soil-brown" />
-        ) : (
-          <HiOutlineMenu className="text-3xl text-dark-soil-brown" />
-        )}
-      </div>
-
-      {/* Mobile Menu */}
-      <div
-        className={`fixed top-0 right-0 z-50  w-2/5 bg-rice-husk-beige shadow-lg transform transition-transform duration-300 ease-in-out ${
-          isOpen ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <ul className="flex flex-col space-y-6 mt-20 ml-6 text-dark-soil-brown text-lg">
-          {navlinks.map((item) => (
-            <li key={item.name}>
-              <p
-                onClick={() => navigate(item.path)}
-                className="cursor-pointer hover:text-malunggay-green"
+        {/* Desktop Nav */}
+        <ul className="hidden md:flex md:items-center md:gap-8 text-lg text-dark-soil-brown">
+          {navlinks.map(({ name, path, icon }) => (
+            <li key={name} className="flex items-center gap-2">
+              <button
+                onClick={() => handleNavigate(path)}
+                className="hover:text-malunggay-green flex items-center gap-2 transition-colors"
               >
-                {item.name}
-              </p>
+                {icon}
+                {name}
+              </button>
             </li>
           ))}
           <button
-            className="btn-neutral container"
+            className="btn-neutral font-medium"
             onClick={() => navigate("/signup")}
           >
             Mag Sign-up
           </button>
-          {/* To fix this button style */}
         </ul>
+
+        {/* Mobile Toggle */}
+        <div className="md:hidden">
+          <button
+            onClick={() => setMenuOpen((prev) => !prev)}
+            className="text-dark-soil-brown text-2xl"
+            aria-label="Toggle menu"
+          >
+            {menuOpen ? <FaTimes /> : <FaBars />}
+          </button>
+        </div>
       </div>
-    </div>
+
+      {/* Mobile Nav */}
+      {menuOpen && (
+        <div className="md:hidden mt-4 px-2">
+          <ul className="flex flex-col space-y-4 text-dark-soil-brown text-lg font-headline">
+            {navlinks.map(({ name, path }) => (
+              <li key={name}>
+                <button
+                  onClick={() => handleNavigate(path)}
+                  className="hover:text-malunggay-green-darker transition-colors"
+                >
+                  {name}
+                </button>
+              </li>
+            ))}
+            <button
+              className="btn-neutral mt-2"
+              onClick={() => handleNavigate("/signup")}
+            >
+              Mag Sign-up
+            </button>
+          </ul>
+        </div>
+      )}
+    </nav>
   );
 };
 

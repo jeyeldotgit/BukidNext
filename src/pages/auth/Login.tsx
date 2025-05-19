@@ -2,12 +2,12 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState<string>();
   const [password, setPassword] = useState("");
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ email, password });
+    console.log({ phoneNumber, password });
     // call your Supabase auth login function or backend logic here
   };
 
@@ -21,14 +21,19 @@ const Login = () => {
         <form className="space-y-4" onSubmit={handleLogin}>
           <div>
             <label className="block mb-1 text-dark-soil-brown font-medium">
-              Email
+              Phone Number
             </label>
             <input
-              type="email"
+              type="tel"
+              inputMode="numeric"
+              pattern="[0-9]*"
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-malunggay-green font-body"
-              placeholder="example@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              placeholder="+63"
+              value={phoneNumber}
+              onChange={(e) => {
+                const numericValue = e.target.value.replace(/\D/g, ""); // Remove non-digits
+                setPhoneNumber(numericValue);
+              }}
               required
             />
           </div>

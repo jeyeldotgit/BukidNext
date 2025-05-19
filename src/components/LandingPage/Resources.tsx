@@ -38,7 +38,7 @@ const resources = [
 
 const Resources = () => {
   return (
-    <section className="w-full py-16 px-6">
+    <section className="w-full py-16 px-6 bg-rice-husk-beige">
       <h2 className="text-3xl font-semibold text-center mb-16">
         Government Support & Tips{" "}
         <span className="text-malunggay-green">/ Mga Artikulo</span>
