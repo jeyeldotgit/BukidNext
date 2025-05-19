@@ -42,7 +42,12 @@ const Navbar = () => {
           </li>
         ))}
 
-        <button className="btn-neutral font-medium">Mag Sign-up</button>
+        <button
+          className="btn-neutral font-medium"
+          onClick={() => navigate("/signup")}
+        >
+          Mag Sign-up
+        </button>
       </ul>
 
       {/* Hamburger Icon (Mobile) */}
@@ -71,7 +76,12 @@ const Navbar = () => {
               </p>
             </li>
           ))}
-          <button className="btn-neutral container">Mag Sign-up</button>
+          <button
+            className="btn-neutral container"
+            onClick={() => navigate("/signup")}
+          >
+            Mag Sign-up
+          </button>
           {/* To fix this button style */}
         </ul>
       </div>

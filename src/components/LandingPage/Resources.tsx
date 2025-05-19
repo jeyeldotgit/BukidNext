@@ -38,7 +38,7 @@ const resources = [
 
 const Resources = () => {
   return (
-    <section className="w-full bg-[#faf3e0] py-16 px-6">
+    <section className="w-full py-16 px-6">
       <h2 className="text-3xl font-semibold text-center mb-16">
         Government Support & Tips{" "}
         <span className="text-malunggay-green">/ Mga Artikulo</span>
@@ -48,7 +48,7 @@ const Resources = () => {
         {resources.map((item, index) => (
           <div
             key={index}
-            className={`flex flex-col md:flex-row items-center gap-6 ${
+            className={`flex flex-col md:flex-row items-center gap-6 shadow-top pt-8 ${
               index % 2 === 1 ? "md:flex-row-reverse" : ""
             }`}
           >
