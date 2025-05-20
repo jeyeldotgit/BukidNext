@@ -1,18 +1,31 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import VerifyOtpModal from "../../components/Auth/VerifyOtpModal";
+import { PhoneAuth } from "../../api/supabase/PhoneAuth";
 
 const Login = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [showPinModal, setShowPinModal] = useState(false);
-  const [pin, setPin] = useState("");
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     console.log({ phoneNumber });
 
-    // Call Supabase auth login or backend logic here
+    // Call Supabase auth login or backend logic
     setShowPinModal(true); // Show modal after "login"
+    try {
+      const res = await PhoneAuth(phoneNumber);
+
+      if (res?.success === false) {
+        console.log("Error Logging in: ", res.message);
+        return;
+      }
+
+      console.log("login successful: ", res?.message);
+      return;
+    } catch (e) {
+      console.error("Error Logging In: ", e);
+    }
   };
 
   return (
@@ -27,7 +40,7 @@ const Login = () => {
         }`}
       >
         <h2 className="text-3xl font-bold text-dark-soil-brown mb-6 text-center font-headline">
-          Mag-login sa iyong Account
+          Mag login gamit and cellphone number
         </h2>
 
         <form className="space-y-4" onSubmit={handleLogin}>
@@ -68,10 +81,9 @@ const Login = () => {
 
       {/* PIN Modal */}
       <VerifyOtpModal
+        phoneNumber={phoneNumber}
         showPinModal={showPinModal}
         setShowPinModal={setShowPinModal}
-        pin={pin}
-        setPin={setPin}
       />
     </div>
   );

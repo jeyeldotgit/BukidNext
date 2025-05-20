@@ -4,17 +4,20 @@ export interface FormData {
   name: string;
   age: number;
   region: string;
-  phoneNumber: string;
 }
 
-const OnSignUpAddProfile = async (formData: FormData, userId: string) => {
+const OnSignUpAddProfile = async (
+  formData: FormData,
+  userId: string | undefined,
+  phone: string | undefined
+) => {
   try {
     const { error } = await supabase.from("profiles").insert({
       id: userId,
       name: formData.name,
       age: formData.age,
       region: formData.region,
-      phone_number: formData.phoneNumber,
+      phone_number: phone,
     });
 
     if (error) {

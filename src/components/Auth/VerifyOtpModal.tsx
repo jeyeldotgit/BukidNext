@@ -5,24 +5,17 @@ import { useNavigate } from "react-router-dom";
 
 import { verifyOTP } from "../../api/supabase/PhoneAuth";
 
-import { useAuth } from "../../hooks/useAuth";
-import type { FormData } from "../../api/supabase/OnSignUpAddProfile";
-
 type VerifyOtpModalProps = {
+  phoneNumber: string;
   showPinModal: boolean;
   setShowPinModal: React.Dispatch<React.SetStateAction<boolean>>;
-  formData: FormData;
 };
 
 const VerifyOtpModal = ({
+  phoneNumber,
   showPinModal,
   setShowPinModal,
-  formData,
 }: VerifyOtpModalProps) => {
-  const { session } = useAuth();
-
-  const userId = session?.user.id;
-
   const navigate = useNavigate();
 
   const [pin, setPin] = useState("");
@@ -31,7 +24,7 @@ const VerifyOtpModal = ({
     e.preventDefault();
 
     try {
-      const res = await verifyOTP(formData.phoneNumber, pin);
+      const res = await verifyOTP(phoneNumber, pin);
 
       if (res?.success === false) {
         console.log("Error: ", res.message);
@@ -39,9 +32,8 @@ const VerifyOtpModal = ({
       }
 
       console.log(res?.message);
-      console.log(userId);
 
-      navigate("/balita");
+      navigate("/profile");
     } catch (error) {
       console.log("Error Verification: ", error);
       return;

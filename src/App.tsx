@@ -2,12 +2,12 @@ import { Routes, Route } from "react-router-dom";
 
 //Pages
 import LandingPage from "./pages/LandingPage";
-import Signup from "./pages/auth/Signup";
 import Login from "./pages/auth/Login";
 import LearningPage from "./pages/core/LearningPage";
 import BalitaPage from "./pages/core/Balita";
 import PresyoNgPananim from "./pages/core/PresyoNgPananim";
 import KalendaryoPage from "./pages/core/Kalendaryo";
+import Profile from "./pages/auth/Profile";
 
 const App = () => {
   return (
@@ -15,9 +15,11 @@ const App = () => {
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/login" element={<Login />} />
-      <Route path="/signup" element={<Signup />} />
 
       {/* Authenticated Routes */}
+      <Route path="/profile" element={<Profile />} />
+
+      {/* Core Prototype Features */}
       <Route path="/matuto" element={<LearningPage />} />
       <Route path="/balita" element={<BalitaPage />} />
       <Route path="/presyo" element={<PresyoNgPananim />} />
