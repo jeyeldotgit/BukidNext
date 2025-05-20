@@ -1,4 +1,5 @@
 import { useState } from "react";
+import supabase from "../../lib/supabaseClient";
 
 import type { FormData } from "../../api/supabase/OnSignUpAddProfile";
 import { regions } from "../../types/Regions";
@@ -45,6 +46,9 @@ const Profile = () => {
       }
 
       console.log("Success: ", res?.message);
+      await supabase.auth.updateUser({
+        data: { profileCompleted: true },
+      });
       navigate("/balita");
     } catch (err) {
       console.error("Error Completing Profile: ", err);

@@ -32,8 +32,13 @@ const VerifyOtpModal = ({
       }
 
       console.log(res?.message);
+      console.log(res?.isNewUser);
 
-      navigate("/profile");
+      if (res?.isNewUser) {
+        navigate("/profile");
+      } else {
+        navigate("/balita"); // or wherever returning users should go
+      }
     } catch (error) {
       console.log("Error Verification: ", error);
       return;

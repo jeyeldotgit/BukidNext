@@ -9,6 +9,8 @@ import PresyoNgPananim from "./pages/core/PresyoNgPananim";
 import KalendaryoPage from "./pages/core/Kalendaryo";
 import Profile from "./pages/auth/Profile";
 
+import ProtectedRoute from "./components/core/General/ProtectedRoute";
+
 const App = () => {
   return (
     <Routes>
@@ -17,13 +19,49 @@ const App = () => {
       <Route path="/login" element={<Login />} />
 
       {/* Authenticated Routes */}
-      <Route path="/profile" element={<Profile />} />
+      <Route
+        path="/profile"
+        element={
+          <ProtectedRoute>
+            <Profile />
+          </ProtectedRoute>
+        }
+      />
 
       {/* Core Prototype Features */}
-      <Route path="/matuto" element={<LearningPage />} />
-      <Route path="/balita" element={<BalitaPage />} />
-      <Route path="/presyo" element={<PresyoNgPananim />} />
-      <Route path="/kalendaryo" element={<KalendaryoPage />} />
+
+      <Route
+        path="/matuto"
+        element={
+          <ProtectedRoute>
+            <LearningPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/balita"
+        element={
+          <ProtectedRoute>
+            <BalitaPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/presyo"
+        element={
+          <ProtectedRoute>
+            <PresyoNgPananim />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/kalendaryo"
+        element={
+          <ProtectedRoute>
+            <KalendaryoPage />
+          </ProtectedRoute>
+        }
+      />
     </Routes>
   );
 };
