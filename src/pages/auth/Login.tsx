@@ -1,19 +1,31 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import VerifyOtpModal from "../../components/Auth/VerifyOtpModal";
 
 const Login = () => {
-  const [phoneNumber, setPhoneNumber] = useState<string>();
-  const [password, setPassword] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [showPinModal, setShowPinModal] = useState(false);
+  const [pin, setPin] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log({ phoneNumber, password });
-    // call your Supabase auth login function or backend logic here
+    console.log({ phoneNumber });
+
+    // Call Supabase auth login or backend logic here
+    setShowPinModal(true); // Show modal after "login"
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-rice-husk-beige px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+    <div
+      className={`min-h-screen flex items-center justify-center px-4 transition-colors duration-300 ${
+        showPinModal ? "bg-black/30" : "bg-rice-husk-beige"
+      }`}
+    >
+      <div
+        className={`w-full max-w-md bg-white rounded-2xl shadow-xl p-8 transition duration-300 ${
+          showPinModal ? "brightness-75" : ""
+        }`}
+      >
         <h2 className="text-3xl font-bold text-dark-soil-brown mb-6 text-center font-headline">
           Mag-login sa iyong Account
         </h2>
@@ -21,7 +33,7 @@ const Login = () => {
         <form className="space-y-4" onSubmit={handleLogin}>
           <div>
             <label className="block mb-1 text-dark-soil-brown font-medium">
-              Phone Number
+              Numero ng Telepono
             </label>
             <input
               type="tel"
@@ -31,23 +43,9 @@ const Login = () => {
               placeholder="+63"
               value={phoneNumber}
               onChange={(e) => {
-                const numericValue = e.target.value.replace(/\D/g, ""); // Remove non-digits
+                const numericValue = e.target.value.replace(/\D/g, "");
                 setPhoneNumber(numericValue);
               }}
-              required
-            />
-          </div>
-
-          <div>
-            <label className="block mb-1 text-dark-soil-brown font-medium">
-              Password
-            </label>
-            <input
-              type="password"
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-malunggay-green font-body"
-              placeholder="••••••••"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
               required
             />
           </div>
@@ -67,6 +65,14 @@ const Login = () => {
           </Link>
         </p>
       </div>
+
+      {/* PIN Modal */}
+      <VerifyOtpModal
+        showPinModal={showPinModal}
+        setShowPinModal={setShowPinModal}
+        pin={pin}
+        setPin={setPin}
+      />
     </div>
   );
 };
