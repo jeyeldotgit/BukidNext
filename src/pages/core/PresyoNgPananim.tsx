@@ -1,65 +1,29 @@
-import Navbar from "../../components/core/General/Navbar";
 import { useState, useEffect } from "react";
+import Navbar from "../../components/core/General/Navbar";
 import PageHeader from "../../components/core/General/PageHeader";
-
-type CropPrice = {
-  id: number;
-  cropName: string;
-  price: number; // price per unit (e.g., per kilo)
-  date: string; // date of price report
-  region: string;
-};
-
-const mockPrices: CropPrice[] = [
-  {
-    id: 1,
-    cropName: "Palay",
-    price: 18.5,
-    date: "2025-05-15",
-    region: "Gitnang Luzon",
-  },
-  {
-    id: 2,
-    cropName: "Sibuyas",
-    price: 55.0,
-    date: "2025-05-14",
-    region: "Rehiyon 3",
-  },
-  {
-    id: 3,
-    cropName: "Mais",
-    price: 22.75,
-    date: "2025-05-13",
-    region: "Rehiyon 4A",
-  },
-];
+import getCropPrice from "../../api/supabase/GetCropPrice";
+import type { Crop } from "../../types/CoreTypes";
 
 const PresyoNgPananim = () => {
   const [search, setSearch] = useState("");
-  const [prices, setPrices] = useState<CropPrice[]>([]);
-  const [filteredPrices, setFilteredPrices] = useState<CropPrice[]>([]);
+  const [dbCrops, setDbCrops] = useState<Crop[]>([]);
   const [loading, setLoading] = useState(true);
 
-  // Simulate fetching data (replace this with real API call)
   useEffect(() => {
-    setLoading(true);
-    setTimeout(() => {
-      setPrices(mockPrices);
+    const fetchCropPrice = async () => {
+      const res = await getCropPrice();
+      if (res.success) {
+        setDbCrops(res.data ?? []);
+      } else {
+        console.error("Error fetching crops:", res.message);
+      }
       setLoading(false);
-    }, 1000);
-  }, []);
+    };
 
-  // Filter by crop name on search
-  useEffect(() => {
-    if (!search.trim()) {
-      setFilteredPrices(prices);
-    } else {
-      const filtered = prices.filter((p) =>
-        p.cropName.toLowerCase().includes(search.toLowerCase())
-      );
-      setFilteredPrices(filtered);
-    }
-  }, [search, prices]);
+    fetchCropPrice();
+  }, []);
+  const filteredCrops = dbCrops?.filter((crop) => crop.crops);
+  console.log(filteredCrops);
 
   return (
     <div className="bg-[#FAF3E0] min-h-screen">
@@ -68,8 +32,7 @@ const PresyoNgPananim = () => {
       <main className="max-w-6xl mx-auto px-6 py-12">
         <PageHeader
           header="Presyo ng Pananim"
-          description="Tingnan ang pinakabagong presyo ng mga pangunahing pananim mula sa
-            PSA. Maaari kang maghanap ng pananim gamit ang search box sa ibaba."
+          description="Tingnan ang pinakabagong presyo ng mga pangunahing pananim mula sa PSA. Maaari kang maghanap ng pananim gamit ang search box sa ibaba."
         />
 
         <section className="mb-12">
@@ -94,7 +57,7 @@ const PresyoNgPananim = () => {
             <p className="text-center text-headline font-semibold">
               Naglo-load ang data...
             </p>
-          ) : filteredPrices.length === 0 ? (
+          ) : filteredCrops.length === 0 ? (
             <p className="text-center text-headline font-semibold">
               Walang nahanap na resulta para sa &quot;{search}&quot;.
             </p>
@@ -103,58 +66,43 @@ const PresyoNgPananim = () => {
               <table className="min-w-full divide-y divide-[#e7d7ba]">
                 <thead className="bg-malunggay-green text-white">
                   <tr>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-left text-sm font-semibold"
-                    >
+                    <th className="px-6 py-3 text-left text-sm font-semibold">
                       Pangalan ng Pananim
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-right text-sm font-semibold"
-                    >
+                    <th className="px-6 py-3 text-right text-sm font-semibold">
                       Presyo (PHP/Kg)
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-center text-sm font-semibold"
-                    >
-                      Petsa ng Ulat
+                    <th className="px-6 py-3 text-center text-sm font-semibold">
+                      Buwan
                     </th>
-                    <th
-                      scope="col"
-                      className="px-6 py-3 text-center text-sm font-semibold"
-                    >
-                      Rehiyon
+                    <th className="px-6 py-3 text-center text-sm font-semibold">
+                      Taon
                     </th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-[#e7d7ba]">
-                  {filteredPrices.map(
-                    ({ id, cropName, price, date, region }) => (
-                      <tr
-                        key={id}
-                        className="hover:bg-[#F0F6E5] transition-colors cursor-default"
-                      >
-                        <td className="px-6 py-4 whitespace-nowrap font-medium text-headline">
-                          {cropName}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-right text-malunggay-green font-semibold">
-                          ₱{price.toFixed(2)}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center text-gray-600 font-mono">
-                          {new Date(date).toLocaleDateString("fil-PH", {
-                            year: "numeric",
-                            month: "long",
-                            day: "numeric",
-                          })}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-center text-body">
-                          {region}
-                        </td>
-                      </tr>
-                    )
-                  )}
+                  {filteredCrops.map((crop) => (
+                    <tr
+                      key={crop.price_id}
+                      className="hover:bg-[#F0F6E5] transition-colors cursor-default"
+                    >
+                      <td className="px-6 py-4 whitespace-nowrap font-medium text-headline">
+                        {crop.crops.name}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-right text-malunggay-green font-semibold">
+                        ₱{crop.price.toFixed(2)}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center text-gray-600 font-mono">
+                        {new Date(2023, crop.month - 1, 1).toLocaleString(
+                          "fil-PH",
+                          { month: "long" }
+                        )}
+                      </td>
+                      <td className="px-6 py-4 whitespace-nowrap text-center text-body">
+                        {crop.year ?? "N/A"}
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
