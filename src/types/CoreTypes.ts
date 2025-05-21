@@ -5,13 +5,16 @@ export type Course = {
   description: string;
 };
 
-export type Crop = {
-  price_id: number;
+export type Crops = {
+  name: string;
+  category: string;
+};
+
+export type CropsPrice = {
+  price_id: number | unknown;
   crop_id: number;
   price: number;
   month: number;
   year: number;
-  crops: {
-    name: string;
-  }[];
+  crops: Crops[];
 };
